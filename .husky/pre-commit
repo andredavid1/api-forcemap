@@ -1,2 +1,4 @@
 echo "Verificando a formatação do código"
 pnpm  lint
+echo "Testando o código"
+pnpm test --onlyChanged
