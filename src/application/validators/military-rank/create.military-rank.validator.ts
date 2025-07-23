@@ -1,4 +1,5 @@
 import { MilitaryRankProps } from "@domain/entities";
+import { MissingParamError } from "@domain/errors";
 import { IMilitaryRankPropsValidator } from "@domain/validators";
 
 export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
@@ -21,9 +22,7 @@ export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
 
     for (const fieldValidator of requiredFields) {
       if (!this.props[fieldValidator.field]) {
-        throw new Error(
-          `Campo ${fieldValidator.label} precisa ser preenchido.`,
-        );
+        throw new MissingParamError(fieldValidator.label);
       }
     }
   };

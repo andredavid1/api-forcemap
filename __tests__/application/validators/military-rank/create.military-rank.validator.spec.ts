@@ -34,7 +34,7 @@ describe("MilitaryRankPropsValidator", () => {
     const props = { order: 1 } as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Abreviatura precisa ser preenchido.",
+      "O campo Abreviatura precisa ser preenchido.",
     );
   });
 
@@ -47,7 +47,7 @@ describe("MilitaryRankPropsValidator", () => {
     } as unknown as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Abreviatura precisa ser preenchido.",
+      "O campo Abreviatura precisa ser preenchido.",
     );
   });
 
@@ -60,7 +60,7 @@ describe("MilitaryRankPropsValidator", () => {
     } as unknown as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Abreviatura precisa ser preenchido.",
+      "O campo Abreviatura precisa ser preenchido.",
     );
   });
 
@@ -70,7 +70,7 @@ describe("MilitaryRankPropsValidator", () => {
     const props = { abbreviation: "Sd" } as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Ordem precisa ser preenchido.",
+      "O campo Ordem precisa ser preenchido.",
     );
   });
 
@@ -80,7 +80,7 @@ describe("MilitaryRankPropsValidator", () => {
     const props = { abbreviation: "Sd", order: 0 } as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Ordem precisa ser preenchido.",
+      "O campo Ordem precisa ser preenchido.",
     );
   });
 
@@ -93,7 +93,7 @@ describe("MilitaryRankPropsValidator", () => {
     } as unknown as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Ordem precisa ser preenchido.",
+      "O campo Ordem precisa ser preenchido.",
     );
   });
 
@@ -106,7 +106,7 @@ describe("MilitaryRankPropsValidator", () => {
     } as unknown as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
-      "Campo Ordem precisa ser preenchido.",
+      "O campo Ordem precisa ser preenchido.",
     );
   });
 });
