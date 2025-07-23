@@ -1,0 +1,2 @@
+echo "Verificando a formatação do código"
+pnpm  lint

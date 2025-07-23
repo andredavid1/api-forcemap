@@ -1,0 +1,2 @@
+echo "Verificando a mensagem do commit..."
+pnpm exec commitlint --edit $1
