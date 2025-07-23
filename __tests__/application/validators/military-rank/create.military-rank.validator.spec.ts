@@ -4,12 +4,20 @@ import { IMilitaryRankPropsValidator } from "@domain/validators";
 
 interface SutTypes {
   sut: IMilitaryRankPropsValidator;
+  militaryRankRepository: {
+    create: jest.Mock;
+    findByAbbreviation: jest.Mock;
+  };
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new MilitaryRankPropsValidator();
+  const militaryRankRepository = {
+    create: jest.fn(),
+    findByAbbreviation: jest.fn().mockResolvedValue(null),
+  };
+  const sut = new MilitaryRankPropsValidator({ militaryRankRepository });
 
-  return { sut };
+  return { sut, militaryRankRepository };
 };
 
 describe("MilitaryRankPropsValidator", () => {
@@ -19,26 +27,26 @@ describe("MilitaryRankPropsValidator", () => {
     sutInstance = makeSut();
   });
 
-  it("should pass if all required fields are correctly provided", () => {
+  it("should pass if all required fields are correctly provided", async () => {
     const { sut } = sutInstance;
     const props: MilitaryRankProps = {
       abbreviation: "Sd",
       order: 1,
     };
-    expect(() => sut.validateOrThrow(props)).not.toThrow();
+    await expect(sut.validateOrThrow(props)).resolves.not.toThrow();
   });
 
-  it("should throw if abbreviation is not provided", () => {
+  it("should throw if abbreviation is not provided", async () => {
     const { sut } = sutInstance;
 
     const props = { order: 1 } as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Abreviatura precisa ser preenchido.",
     );
   });
 
-  it("should throw if abbreviation is undefined", () => {
+  it("should throw if abbreviation is undefined", async () => {
     const { sut } = sutInstance;
 
     const props = {
@@ -46,12 +54,12 @@ describe("MilitaryRankPropsValidator", () => {
       order: 1,
     } as unknown as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Abreviatura precisa ser preenchido.",
     );
   });
 
-  it("should throw if abbreviation is null", () => {
+  it("should throw if abbreviation is null", async () => {
     const { sut } = sutInstance;
 
     const props = {
@@ -59,32 +67,49 @@ describe("MilitaryRankPropsValidator", () => {
       order: 1,
     } as unknown as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Abreviatura precisa ser preenchido.",
     );
   });
 
-  it("should throw if order is not provided", () => {
+  it("should throw if abbreviation already exists", async () => {
+    const { sut, militaryRankRepository } = sutInstance;
+
+    const props = { abbreviation: "Sd", order: 1 } as MilitaryRankProps;
+
+    jest
+      .spyOn(militaryRankRepository, "findByAbbreviation")
+      .mockResolvedValueOnce({
+        id: "123",
+        ...props,
+      } as MilitaryRankProps);
+
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
+      "Já existe um Posto/Graduação com essa abreviatura.",
+    );
+  });
+
+  it("should throw if order is not provided", async () => {
     const { sut } = sutInstance;
 
     const props = { abbreviation: "Sd" } as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Ordem precisa ser preenchido.",
     );
   });
 
-  it("should throw if order is equal to 0", () => {
+  it("should throw if order is equal to 0", async () => {
     const { sut } = sutInstance;
 
     const props = { abbreviation: "Sd", order: 0 } as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Ordem precisa ser preenchido.",
     );
   });
 
-  it("should throw if order is undefined", () => {
+  it("should throw if order is undefined", async () => {
     const { sut } = sutInstance;
 
     const props = {
@@ -92,12 +117,12 @@ describe("MilitaryRankPropsValidator", () => {
       order: undefined,
     } as unknown as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Ordem precisa ser preenchido.",
     );
   });
 
-  it("should throw if order is null", () => {
+  it("should throw if order is null", async () => {
     const { sut } = sutInstance;
 
     const props = {
@@ -105,7 +130,7 @@ describe("MilitaryRankPropsValidator", () => {
       order: null,
     } as unknown as MilitaryRankProps;
 
-    expect(() => sut.validateOrThrow(props)).toThrow(
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Ordem precisa ser preenchido.",
     );
   });
