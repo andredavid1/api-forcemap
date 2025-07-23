@@ -19,6 +19,15 @@ describe("MilitaryRankPropsValidator", () => {
     sutInstance = makeSut();
   });
 
+  it("should pass if all required fields are correctly provided", () => {
+    const { sut } = sutInstance;
+    const props: MilitaryRankProps = {
+      abbreviation: "Sd",
+      order: 1,
+    };
+    expect(() => sut.validateOrThrow(props)).not.toThrow();
+  });
+
   it("should throw if abbreviation is not provided", () => {
     const { sut } = sutInstance;
 
