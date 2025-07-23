@@ -1,4 +1,4 @@
-import { MilitaryRankPropsValidator } from "../../../../application/validators/military-rank/create";
+import { MilitaryRankPropsValidator } from "../../../../application/validators/military-rank/create.military-rank.validator";
 import { MilitaryRankProps } from "../../../../domain/entities";
 import { IMilitaryRankPropsValidator } from "../../../../domain/validators";
 

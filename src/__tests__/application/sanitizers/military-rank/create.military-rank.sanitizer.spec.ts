@@ -1,4 +1,4 @@
-import { MilitaryRankPropsSanitizer } from "../../../../application/sanitizers/military-rank/create";
+import { MilitaryRankPropsSanitizer } from "../../../../application/sanitizers/military-rank/create.military-rank.sanitizer";
 import { MilitaryRankProps } from "../../../../domain/entities";
 import { IMilitaryRankPropsSanitizer } from "../../../../domain/sanitizers";
 
