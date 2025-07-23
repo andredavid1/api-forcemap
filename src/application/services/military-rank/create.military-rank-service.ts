@@ -1,8 +1,8 @@
-import { MilitaryRankProps } from "../../../domain/entities";
-import { IMilitaryRankRepository } from "../../../domain/repositories";
-import { IMilitaryRankPropsSanitizer } from "../../../domain/sanitizers";
-import { ICreateMilitaryRank } from "../../../domain/usecases";
-import { IMilitaryRankPropsValidator } from "../../../domain/validators";
+import { MilitaryRankProps } from "@domain/entities";
+import { IMilitaryRankRepository } from "@domain/repositories";
+import { IMilitaryRankPropsSanitizer } from "@domain/sanitizers";
+import { ICreateMilitaryRank } from "@domain/usecases";
+import { IMilitaryRankPropsValidator } from "@domain/validators";
 
 interface CreateMilitaryRankServiceProps {
   militaryRankRepository: IMilitaryRankRepository;

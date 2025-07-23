@@ -1,8 +1,8 @@
-import { MilitaryRankProps } from "../../../domain/entities";
-import { IMilitaryRankPropsSanitizer } from "../../../domain/sanitizers";
+import { MilitaryRankProps } from "@domain/entities";
+import { IMilitaryRankPropsSanitizer } from "@domain/sanitizers";
 
 export class MilitaryRankPropsSanitizer implements IMilitaryRankPropsSanitizer {
-  sanitize(props: MilitaryRankProps): MilitaryRankProps {
+  public sanitize(props: MilitaryRankProps): MilitaryRankProps {
     const cleanOrder = (value: unknown): number => {
       const num = Number(value);
 

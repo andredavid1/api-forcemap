@@ -1,5 +1,5 @@
-import { MilitaryRankProps } from "../../../domain/entities";
-import { IMilitaryRankPropsValidator } from "../../../domain/validators";
+import { MilitaryRankProps } from "@domain/entities";
+import { IMilitaryRankPropsValidator } from "@domain/validators";
 
 export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
   private props: MilitaryRankProps = {} as MilitaryRankProps;
@@ -8,7 +8,7 @@ export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
     this.props = props;
   };
 
-  private readonly missingFieldsValidator = () => {
+  private readonly missingFieldsValidator = (): void => {
     interface RequiredFields {
       field: keyof MilitaryRankProps;
       label: string;

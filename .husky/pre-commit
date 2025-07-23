@@ -1,4 +1,4 @@
 echo "Padronizando o código..."
 pnpm lint
 echo "Executando os testes..."
-pnpm test:coverage --onlyChanged
+pnpm test:staged

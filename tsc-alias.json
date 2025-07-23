@@ -1,0 +1,8 @@
+{
+  "replacers": {
+    "base-url": {
+      "enabled": true,
+      "rootDir": "./src"
+    }
+  }
+}

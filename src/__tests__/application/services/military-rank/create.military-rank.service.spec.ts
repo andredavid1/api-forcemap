@@ -1,5 +1,5 @@
-import { CreateMilitaryRankService } from "../../../../application/services";
-import { MilitaryRankProps } from "../../../../domain/entities";
+import { CreateMilitaryRankService } from "@application/services";
+import { MilitaryRankProps } from "@domain/entities";
 
 interface SutTypes {
   sut: CreateMilitaryRankService;
