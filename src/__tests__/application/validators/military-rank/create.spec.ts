@@ -78,7 +78,23 @@ describe("MilitaryRankPropsValidator", () => {
   it("should throw if order is undefined", () => {
     const { sut } = sutInstance;
 
-    const props = { abbreviation: "Sd", order: 0 } as MilitaryRankProps;
+    const props = {
+      abbreviation: "Sd",
+      order: undefined,
+    } as unknown as MilitaryRankProps;
+
+    expect(() => sut.validateOrThrow(props)).toThrow(
+      "Campo Ordem precisa ser preenchido.",
+    );
+  });
+
+  it("should throw if order is null", () => {
+    const { sut } = sutInstance;
+
+    const props = {
+      abbreviation: "Sd",
+      order: null,
+    } as unknown as MilitaryRankProps;
 
     expect(() => sut.validateOrThrow(props)).toThrow(
       "Campo Ordem precisa ser preenchido.",
