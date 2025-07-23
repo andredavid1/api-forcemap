@@ -1,6 +1,6 @@
-import { MilitaryRankPropsValidator } from "../../../../application/validators/military-rank/create.military-rank.validator";
-import { MilitaryRankProps } from "../../../../domain/entities";
-import { IMilitaryRankPropsValidator } from "../../../../domain/validators";
+import { MilitaryRankPropsValidator } from "@application/validators/military-rank/create.military-rank.validator";
+import { MilitaryRankProps } from "@domain/entities";
+import { IMilitaryRankPropsValidator } from "@domain/validators";
 
 interface SutTypes {
   sut: IMilitaryRankPropsValidator;

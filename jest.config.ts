@@ -6,9 +6,7 @@ const config: Config = {
   coverageProvider: "v8",
   maxWorkers: "50%",
   passWithNoTests: true,
-  transform: {
-    "^.+\\.tsx?$": "ts-jest",
-  },
+  preset: "ts-jest",
   testEnvironment: "node",
   moduleFileExtensions: ["ts", "tsx", "js"],
   coverageThreshold: {
@@ -19,7 +17,7 @@ const config: Config = {
       statements: 80,
     },
   },
-  roots: ["<rootDir>/src"],
+  roots: ["<rootDir>/src", "<rootDir>/__tests__"],
   testMatch: ["**/__tests__/**/*.spec.ts"],
   moduleNameMapper: {
     "^@domain/(.*)$": "<rootDir>/src/domain/$1",
@@ -27,15 +25,19 @@ const config: Config = {
     "^@infrastructure/(.*)$": "<rootDir>/src/infrastructure/$1",
     "^@presentation/(.*)$": "<rootDir>/src/presentation/$1",
     "^@shared/(.*)$": "<rootDir>/src/shared/$1",
-    "^@tests/(.*)$": "<rootDir>/src/__tests__/$1",
+    "^@tests/(.*)$": "<rootDir>/__tests__/$1",
   },
   collectCoverageFrom: [
     "src/**/*.ts",
     "!src/**/*.spec.ts",
     "!src/**/*.interface.ts",
     "!src/**/index.ts",
-    "!src/__tests__/**",
   ],
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.test.json",
+    },
+  },
 };
 
 export default config;

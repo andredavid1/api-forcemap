@@ -1,6 +1,6 @@
-import { MilitaryRankPropsSanitizer } from "../../../../application/sanitizers/military-rank/create.military-rank.sanitizer";
-import { MilitaryRankProps } from "../../../../domain/entities";
-import { IMilitaryRankPropsSanitizer } from "../../../../domain/sanitizers";
+import { MilitaryRankPropsSanitizer } from "@application/sanitizers/military-rank/create.military-rank.sanitizer";
+import { MilitaryRankProps } from "@domain/entities";
+import { IMilitaryRankPropsSanitizer } from "@domain/sanitizers";
 
 interface SutTypes {
   sut: IMilitaryRankPropsSanitizer;
