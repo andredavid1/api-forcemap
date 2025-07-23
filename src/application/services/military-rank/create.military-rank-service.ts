@@ -24,7 +24,7 @@ export class CreateMilitaryRankService implements ICreateMilitaryRank {
 
     const sanitizedProps =
       militaryRankPropsSanitizer.sanitize(militaryRankProps);
-    militaryRankPropsValidator.validateOrThrow(sanitizedProps);
+    await militaryRankPropsValidator.validateOrThrow(sanitizedProps);
     await militaryRankRepository.create(sanitizedProps);
   };
 }

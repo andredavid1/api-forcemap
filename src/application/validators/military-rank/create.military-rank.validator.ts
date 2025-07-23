@@ -1,9 +1,15 @@
 import { MilitaryRankProps } from "@domain/entities";
 import { MissingParamError } from "@domain/errors";
+import { IMilitaryRankRepository } from "@domain/repositories";
 import { IMilitaryRankPropsValidator } from "@domain/validators";
 
+interface ConstructorProps {
+  militaryRankRepository: IMilitaryRankRepository;
+}
 export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
   private props: MilitaryRankProps = {} as MilitaryRankProps;
+
+  constructor(private readonly constructorProps: ConstructorProps) {}
 
   private readonly setMilitaryRankProps = (props: MilitaryRankProps): void => {
     this.props = props;
@@ -27,8 +33,22 @@ export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
     }
   };
 
-  public readonly validateOrThrow = (props: MilitaryRankProps): void => {
+  private readonly abbreviationExistsValidator = async (): Promise<void> => {
+    const { militaryRankRepository } = this.constructorProps;
+
+    const militaryRank = await militaryRankRepository.findByAbbreviation(
+      this.props.abbreviation,
+    );
+    if (militaryRank) {
+      throw new Error("Já existe um Posto/Graduação com essa abreviatura.");
+    }
+  };
+
+  public readonly validateOrThrow = async (
+    props: MilitaryRankProps,
+  ): Promise<void> => {
     this.setMilitaryRankProps(props);
     this.missingFieldsValidator();
+    await this.abbreviationExistsValidator();
   };
 }

@@ -1,3 +1,7 @@
-import { ICreateMilitaryRank } from "../usecases";
+import {
+  ICreateMilitaryRank,
+  IFindMilitaryRankByAbbreviation,
+} from "../usecases";
 
-export type IMilitaryRankRepository = ICreateMilitaryRank;
+export type IMilitaryRankRepository = ICreateMilitaryRank &
+  IFindMilitaryRankByAbbreviation;
