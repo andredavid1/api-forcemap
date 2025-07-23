@@ -41,4 +41,17 @@ describe("MilitaryRankPropsValidator", () => {
       "Campo Abreviatura precisa ser preenchido.",
     );
   });
+
+  it("should throw if abbreviation is null", () => {
+    const { sut } = sutInstance;
+
+    const props = {
+      abbreviation: null,
+      order: 1,
+    } as unknown as MilitaryRankProps;
+
+    expect(() => sut.validateOrThrow(props)).toThrow(
+      "Campo Abreviatura precisa ser preenchido.",
+    );
+  });
 });
