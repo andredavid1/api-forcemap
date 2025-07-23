@@ -64,4 +64,14 @@ describe("MilitaryRankPropsValidator", () => {
       "Campo Ordem precisa ser preenchido.",
     );
   });
+
+  it("should throw if order is equal to 0", () => {
+    const { sut } = sutInstance;
+
+    const props = { abbreviation: "Sd", order: 0 } as MilitaryRankProps;
+
+    expect(() => sut.validateOrThrow(props)).toThrow(
+      "Campo Ordem precisa ser preenchido.",
+    );
+  });
 });
