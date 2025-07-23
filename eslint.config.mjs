@@ -22,5 +22,11 @@ export default tseslint.config(
       "prefer-const": "error",
       "no-var": "error",
     },
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+    ],
   },
 );
