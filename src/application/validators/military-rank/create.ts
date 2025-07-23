@@ -6,5 +6,9 @@ export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
     if (!props.abbreviation) {
       throw new Error("Campo Abreviatura precisa ser preenchido.");
     }
+
+    if (!props.order) {
+      throw new Error("Campo Ordem precisa ser preenchido.");
+    }
   };
 }
