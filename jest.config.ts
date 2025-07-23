@@ -30,7 +30,10 @@ const config: Config = {
   collectCoverageFrom: [
     "src/**/*.ts",
     "!src/**/*.spec.ts",
+    "!src/**/*.test.ts",
+    "!src/**/*.entity.ts",
     "!src/**/*.interface.ts",
+    "!src/**/*.usecase.ts",
     "!src/**/index.ts",
   ],
   globals: {

@@ -8,6 +8,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const militaryRankRepository = {
     create: jest.fn(),
+    findByAbbreviation: jest.fn().mockResolvedValue(null),
   };
   const militaryRankPropsSanitizer = {
     sanitize: jest.fn(),
