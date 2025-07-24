@@ -68,7 +68,7 @@ describe("CreateMilitaryRankController", () => {
     expect(httpResponse.statusCode).toBe(422);
   });
 
-  it("should be return 500 on server error", async () => {
+  it("should be return 500 on unexpcted service error", async () => {
     const { sut, createMilitaryRankService } = sutInstance;
 
     const expectedError = new Error("Erro interno no servidor.");
@@ -86,6 +86,4 @@ describe("CreateMilitaryRankController", () => {
     expect(httpResponse.body?.error).toEqual(expectedError.message);
     expect(httpResponse.statusCode).toBe(500);
   });
-
-  //...TODO: testar condições de erro do cliente.
 });
