@@ -23,31 +23,35 @@ export class CreateMilitaryRankController
 
     try {
       if (!httpRequest.body.data) {
-        throw new Error("Campos obrigatórios não foram preenchidos.");
+        throw new CustomAppError(
+          "Campos obrigatórios não foram preenchidos.",
+          422,
+        );
       }
 
       const data: MilitaryRankProps = httpRequest.body.data;
 
       await createMilitaryRankService.create(data);
 
-      return {
+      const httpResponse: IHttpResponse<null> = {
         statusCode: 201,
       };
-    } catch (error) {
+
+      return httpResponse;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       if (error instanceof CustomAppError) {
-        return {
-          body: {
-            error: error.message,
-          },
+        const httpResponse: IHttpResponse<null> = {
+          body: { error: error.message },
           statusCode: error.statusCode,
         };
+        return httpResponse;
       }
-      return {
-        body: {
-          error: "Erro interno do servidor.",
-        },
+      const httpResponse: IHttpResponse<null> = {
+        body: { error: "Erro interno do servidor." },
         statusCode: 500,
       };
+      return httpResponse;
     }
   };
 }
