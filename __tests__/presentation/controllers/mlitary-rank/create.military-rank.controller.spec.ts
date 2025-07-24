@@ -1,7 +1,10 @@
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { CreateMilitaryRankController } from "@presentation/controllers/military-rank/create.military-rank.controller";
-import { IHttpRequest } from "@presentation/protocols/http.interface";
+import {
+  IHttpRequest,
+  IHttpResponse,
+} from "@presentation/protocols/http.interface";
 
 interface SutTypes {
   sut: CreateMilitaryRankController;
@@ -47,6 +50,20 @@ describe("CreateMilitaryRankController", () => {
       },
     };
 
-    await expect(sut.handle(httpRequest)).resolves.not.toThrow();
+    const httpResponse: IHttpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(201);
+  });
+
+  it("should be return 422 if body is empty provided", async () => {
+    const { sut } = sutInstance;
+
+    const httpRequest: IHttpRequest<MilitaryRankProps> = {
+      body: {},
+    };
+
+    const httpResponse: IHttpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(422);
   });
 });
