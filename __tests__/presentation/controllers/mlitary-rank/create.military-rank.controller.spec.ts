@@ -66,4 +66,7 @@ describe("CreateMilitaryRankController", () => {
 
     expect(httpResponse.statusCode).toBe(422);
   });
+
+  //...TODO: testar condições onde abbreviation ou ordem não são enviados.
+  //...TODO: testar condição onde o service falhe.
 });
