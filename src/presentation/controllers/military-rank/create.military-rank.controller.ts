@@ -48,7 +48,7 @@ export class CreateMilitaryRankController
         return httpResponse;
       }
       const httpResponse: IHttpResponse<null> = {
-        body: { error: "Erro interno do servidor." },
+        body: { error: "Erro interno no servidor." },
         statusCode: 500,
       };
       return httpResponse;
