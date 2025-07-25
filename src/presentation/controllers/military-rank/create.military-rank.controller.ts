@@ -1,11 +1,11 @@
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { CustomAppError } from "@domain/errors";
-import { IController } from "@presentation/protocols/controller.interface";
 import {
+  IController,
   IHttpRequest,
   IHttpResponse,
-} from "@presentation/protocols/http.interface";
+} from "@presentation/protocols";
 
 interface IConstructorProps {
   createMilitaryRankService: CreateMilitaryRankService;

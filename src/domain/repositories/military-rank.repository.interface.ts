@@ -1,7 +1,7 @@
 import {
   ICreateMilitaryRank,
   IFindMilitaryRankByAbbreviation,
-} from "../usecases";
+} from "@domain/usecases";
 
 export type IMilitaryRankRepository = ICreateMilitaryRank &
   IFindMilitaryRankByAbbreviation;

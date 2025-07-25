@@ -1,4 +1,4 @@
-import { CustomAppError } from "../../domain/errors/custom.app.error";
+import { CustomAppError } from "@domain/errors";
 
 export class MissingParamError extends CustomAppError {
   constructor(paramName: string) {
