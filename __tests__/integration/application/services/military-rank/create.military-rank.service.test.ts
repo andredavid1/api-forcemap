@@ -1,3 +1,4 @@
+import { MissingParamError } from "@application/errors";
 import { MilitaryRankPropsSanitizer } from "@application/sanitizers";
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankPropsValidator } from "@application/validators";
@@ -72,6 +73,21 @@ describe("CreateMilitaryRankService Integration Test", () => {
 
       expect(militaryRankCreated).not.toBeNull();
       expect(militaryRankCreated?.abbreviation).toBe("Gen");
+    });
+
+    test("should sanitize invalid string order to 0 and throw validation error", async () => {
+      const propsWithStringOrder = {
+        abbreviation: "Maj",
+        order: "3",
+      };
+
+      // O sanitizador converte string para 0, que é inválido
+      await expect(
+        sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
+      ).rejects.toThrow(MissingParamError);
+      await expect(
+        sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
+      ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
     });
   });
 });
