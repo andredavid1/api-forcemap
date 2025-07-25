@@ -145,6 +145,17 @@ describe("CreateMilitaryRankService Integration Test", () => {
       );
     });
 
+    test("should throw MissingParamError when order is negative", async () => {
+      const propsWithNegativeOrder: MilitaryRankProps = {
+        abbreviation: "Cb",
+        order: -1,
+      };
+
+      await expect(sut.create(propsWithNegativeOrder)).rejects.toThrow(
+        MissingParamError,
+      );
+    });
+
     test("should throw MissingParamError when order is not a number", async () => {
       const propsWithInvalidOrder = {
         abbreviation: "Cap",
