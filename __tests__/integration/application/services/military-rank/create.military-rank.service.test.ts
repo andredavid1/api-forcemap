@@ -89,5 +89,21 @@ describe("CreateMilitaryRankService Integration Test", () => {
         sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
       ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
     });
+
+    test("should accept numeric order values", async () => {
+      const propsWithNumericOrder: MilitaryRankProps = {
+        abbreviation: "Maj",
+        order: 3,
+      };
+
+      await expect(sut.create(propsWithNumericOrder)).resolves.not.toThrow();
+
+      const militaryRankCreated =
+        await militaryRankRepository.findByAbbreviation("Maj");
+
+      expect(militaryRankCreated).not.toBeNull();
+      expect(militaryRankCreated?.order).toBe(3);
+      expect(typeof militaryRankCreated?.order).toBe("number");
+    });
   });
 });
