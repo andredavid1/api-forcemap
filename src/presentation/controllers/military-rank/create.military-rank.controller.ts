@@ -2,10 +2,7 @@ import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { CustomAppError } from "@domain/errors";
 import { EmptyRequestBodyError } from "@presentation/errors";
-import {
-  HttpClientError,
-  HttpServerError,
-} from "@presentation/helpers/http.response";
+import { HttpClientError, HttpServerError } from "@presentation/helpers";
 import {
   IController,
   IHttpRequest,
