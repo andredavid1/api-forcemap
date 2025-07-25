@@ -232,4 +232,27 @@ describe("CreateMilitaryRankService Integration Test", () => {
       ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
     });
   });
+
+  describe("Edge cases", () => {
+    test("should handle multiple creations in sequence", async () => {
+      const ranks: MilitaryRankProps[] = [
+        { abbreviation: "Gen Ex", order: 1 },
+        { abbreviation: "Gen Div", order: 2 },
+        { abbreviation: "Gen Bda", order: 3 },
+      ];
+
+      for (const rank of ranks) {
+        await expect(sut.create(rank)).resolves.not.toThrow();
+      }
+
+      // Verifica se todos foram criados
+      for (const rank of ranks) {
+        const found = await militaryRankRepository.findByAbbreviation(
+          rank.abbreviation,
+        );
+        expect(found).not.toBeNull();
+        expect(found?.order).toBe(rank.order);
+      }
+    });
+  });
 });
