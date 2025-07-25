@@ -1,4 +1,4 @@
-import { MissingParamError } from "@application/errors";
+import { DuplicatedKeyError, MissingParamError } from "@application/errors";
 import { MilitaryRankPropsSanitizer } from "@application/sanitizers";
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankPropsValidator } from "@application/validators";
@@ -104,6 +104,24 @@ describe("CreateMilitaryRankService Integration Test", () => {
       );
       await expect(sut.create(propsWithoutAbbreviation)).rejects.toThrow(
         "O campo Abreviatura precisa ser preenchido.",
+      );
+    });
+
+    test("should throw DuplicatedKeyError when abbreviation already exists", async () => {
+      // Primeiro cria um military rank
+      await sut.create(militaryRankProps);
+
+      // Tenta criar outro com a mesma abreviatura
+      const duplicatedProps: MilitaryRankProps = {
+        abbreviation: militaryRankProps.abbreviation,
+        order: 2,
+      };
+
+      await expect(sut.create(duplicatedProps)).rejects.toThrow(
+        DuplicatedKeyError,
+      );
+      await expect(sut.create(duplicatedProps)).rejects.toThrow(
+        "Já existe um(a) Posto/Graduação com esse valor.",
       );
     });
 
