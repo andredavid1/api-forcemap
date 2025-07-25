@@ -170,6 +170,17 @@ describe("CreateMilitaryRankService Integration Test", () => {
       ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
     });
 
+    test("should throw MissingParamError when order is not an integer", async () => {
+      const propsWithFloatOrder: MilitaryRankProps = {
+        abbreviation: "Sd",
+        order: 1.5,
+      };
+
+      await expect(sut.create(propsWithFloatOrder)).rejects.toThrow(
+        MissingParamError,
+      );
+    });
+
     test("should sanitize invalid string order to 0 and throw validation error", async () => {
       const propsWithStringOrder = {
         abbreviation: "Maj",
