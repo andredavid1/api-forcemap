@@ -134,6 +134,17 @@ describe("CreateMilitaryRankService Integration Test", () => {
       ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
     });
 
+    test("should throw MissingParamError when order is zero", async () => {
+      const propsWithZeroOrder: MilitaryRankProps = {
+        abbreviation: "Sgt",
+        order: 0,
+      };
+
+      await expect(sut.create(propsWithZeroOrder)).rejects.toThrow(
+        MissingParamError,
+      );
+    });
+
     test("should throw MissingParamError when order is not a number", async () => {
       const propsWithInvalidOrder = {
         abbreviation: "Cap",
