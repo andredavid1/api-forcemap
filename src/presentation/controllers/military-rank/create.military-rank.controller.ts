@@ -1,7 +1,10 @@
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { CustomAppError } from "@domain/errors";
-import { HttpClientError } from "@presentation/errors";
+import {
+  HttpClientError,
+  HttpServerError,
+} from "@presentation/helpers/http.response";
 import {
   IController,
   IHttpRequest,
@@ -42,13 +45,9 @@ export class CreateMilitaryRankController
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error instanceof CustomAppError) {
-        return new HttpClientError(error);
+        return HttpClientError(error);
       }
-      const httpResponse: IHttpResponse<null> = {
-        body: { error: "Erro interno no servidor." },
-        statusCode: 500,
-      };
-      return httpResponse;
+      return HttpServerError(error as Error);
     }
   };
 }
