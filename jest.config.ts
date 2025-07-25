@@ -18,7 +18,7 @@ const config: Config = {
     },
   },
   roots: ["<rootDir>/src", "<rootDir>/__tests__"],
-  testMatch: ["**/__tests__/**/*.spec.ts"],
+  testMatch: ["**/__tests__/**/*.spec.ts", "**/__tests__/**/*.test.ts"],
   moduleNameMapper: {
     "^@domain/(.*)$": "<rootDir>/src/domain/$1",
     "^@application/(.*)$": "<rootDir>/src/application/$1",
