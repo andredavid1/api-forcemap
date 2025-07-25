@@ -27,32 +27,51 @@ const makeSut = (): SutTypes => {
 
 describe("CreateMilitaryRankService Integration Test", () => {
   let sutInstance: SutTypes;
+  let sut: CreateMilitaryRankService;
+  let militaryRankRepository: IMilitaryRankRepository;
+  const militaryRankProps: MilitaryRankProps = {
+    abbreviation: "Cel",
+    order: 1,
+  };
 
   beforeEach(() => {
     sutInstance = makeSut();
+    sut = sutInstance.sut;
+    militaryRankRepository = sutInstance.militaryRankRepository;
   });
 
-  test("should create a military rank with correct props", async () => {
-    const { sut, militaryRankRepository } = sutInstance;
+  describe("Successful creation", () => {
+    test("should create a military rank with correct props", async () => {
+      await expect(sut.create(militaryRankProps)).resolves.not.toThrow();
 
-    const militaryRankProps: MilitaryRankProps = {
-      abbreviation: "Cel",
-      order: 1,
-    };
+      const militaryRankCreated =
+        await militaryRankRepository.findByAbbreviation(
+          militaryRankProps.abbreviation,
+        );
 
-    await expect(sut.create(militaryRankProps)).resolves.not.toThrow();
+      expect(militaryRankCreated).not.toBeNull();
+      expect(militaryRankCreated?.abbreviation).toBe(
+        militaryRankProps.abbreviation,
+      );
+      expect(militaryRankCreated?.order).toBe(militaryRankProps.order);
+      expect(militaryRankCreated).toHaveProperty("id");
+      expect(militaryRankCreated).toHaveProperty("createdAt");
+      expect(militaryRankCreated).toHaveProperty("updatedAt");
+    });
 
-    const militaryRankCreated = await militaryRankRepository.findByAbbreviation(
-      militaryRankProps.abbreviation,
-    );
+    test("should sanitize abbreviation by trimming whitespace", async () => {
+      const propsWithWhitespace: MilitaryRankProps = {
+        abbreviation: "  Gen  ",
+        order: 2,
+      };
 
-    expect(militaryRankCreated).not.toBeNull();
-    expect(militaryRankCreated?.abbreviation).toBe(
-      militaryRankProps.abbreviation,
-    );
-    expect(militaryRankCreated?.order).toBe(militaryRankProps.order);
-    expect(militaryRankCreated).toHaveProperty("id");
-    expect(militaryRankCreated).toHaveProperty("createdAt");
-    expect(militaryRankCreated).toHaveProperty("updatedAt");
+      await expect(sut.create(propsWithWhitespace)).resolves.not.toThrow();
+
+      const militaryRankCreated =
+        await militaryRankRepository.findByAbbreviation("Gen");
+
+      expect(militaryRankCreated).not.toBeNull();
+      expect(militaryRankCreated?.abbreviation).toBe("Gen");
+    });
   });
 });
