@@ -85,7 +85,7 @@ describe("MilitaryRankPropsValidator", () => {
       } as MilitaryRankProps);
 
     await expect(sut.validateOrThrow(props)).rejects.toThrow(
-      "Já existe um Posto/Graduação com essa abreviatura.",
+      "Já existe um(a) Posto/Graduação com esse valor.",
     );
   });
 

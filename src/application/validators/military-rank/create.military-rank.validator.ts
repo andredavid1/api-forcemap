@@ -1,4 +1,4 @@
-import { MissingParamError } from "@application/errors";
+import { DuplicatedKeyError, MissingParamError } from "@application/errors";
 import { MilitaryRankProps } from "@domain/entities";
 import { IMilitaryRankRepository } from "@domain/repositories";
 import { IMilitaryRankPropsValidator } from "@domain/validators";
@@ -40,7 +40,7 @@ export class MilitaryRankPropsValidator implements IMilitaryRankPropsValidator {
       this.props.abbreviation,
     );
     if (militaryRank) {
-      throw new Error("Já existe um Posto/Graduação com essa abreviatura.");
+      throw new DuplicatedKeyError("Posto/Graduação");
     }
   };
 
