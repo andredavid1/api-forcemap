@@ -1,6 +1,7 @@
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { CustomAppError } from "@domain/errors";
+import { EmptyRequestBodyError } from "@presentation/errors";
 import {
   HttpClientError,
   HttpServerError,
@@ -27,10 +28,7 @@ export class CreateMilitaryRankController
 
     try {
       if (!httpRequest.body.data) {
-        throw new CustomAppError(
-          "Campos obrigatórios não foram preenchidos.",
-          422,
-        );
+        throw new EmptyRequestBodyError();
       }
 
       const data: MilitaryRankProps = httpRequest.body.data;
