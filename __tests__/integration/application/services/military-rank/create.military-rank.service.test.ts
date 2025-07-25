@@ -75,21 +75,6 @@ describe("CreateMilitaryRankService Integration Test", () => {
       expect(militaryRankCreated?.abbreviation).toBe("Gen");
     });
 
-    test("should sanitize invalid string order to 0 and throw validation error", async () => {
-      const propsWithStringOrder = {
-        abbreviation: "Maj",
-        order: "3",
-      };
-
-      // O sanitizador converte string para 0, que é inválido
-      await expect(
-        sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
-      ).rejects.toThrow(MissingParamError);
-      await expect(
-        sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
-      ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
-    });
-
     test("should accept numeric order values", async () => {
       const propsWithNumericOrder: MilitaryRankProps = {
         abbreviation: "Maj",
@@ -104,6 +89,37 @@ describe("CreateMilitaryRankService Integration Test", () => {
       expect(militaryRankCreated).not.toBeNull();
       expect(militaryRankCreated?.order).toBe(3);
       expect(typeof militaryRankCreated?.order).toBe("number");
+    });
+  });
+
+  describe("Validation errors", () => {
+    test("should throw MissingParamError when abbreviation is missing", async () => {
+      const propsWithoutAbbreviation: MilitaryRankProps = {
+        abbreviation: "",
+        order: 1,
+      };
+
+      await expect(sut.create(propsWithoutAbbreviation)).rejects.toThrow(
+        MissingParamError,
+      );
+      await expect(sut.create(propsWithoutAbbreviation)).rejects.toThrow(
+        "O campo Abreviatura precisa ser preenchido.",
+      );
+    });
+
+    test("should sanitize invalid string order to 0 and throw validation error", async () => {
+      const propsWithStringOrder = {
+        abbreviation: "Maj",
+        order: "3",
+      };
+
+      // O sanitizador converte string para 0, que é inválido
+      await expect(
+        sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
+      ).rejects.toThrow(MissingParamError);
+      await expect(
+        sut.create(propsWithStringOrder as unknown as MilitaryRankProps),
+      ).rejects.toThrow("O campo Ordem precisa ser preenchido.");
     });
   });
 });
