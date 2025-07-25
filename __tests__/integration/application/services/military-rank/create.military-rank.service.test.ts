@@ -125,6 +125,24 @@ describe("CreateMilitaryRankService Integration Test", () => {
       );
     });
 
+    test("should throw DuplicatedKeyError even with different case", async () => {
+      // Primeiro cria um military rank
+      await sut.create(militaryRankProps);
+
+      // Tenta criar outro com a mesma abreviatura em maiúsculas
+      const duplicatedProps: MilitaryRankProps = {
+        abbreviation: militaryRankProps.abbreviation.toUpperCase(),
+        order: 2,
+      };
+
+      await expect(sut.create(duplicatedProps)).rejects.toThrow(
+        DuplicatedKeyError,
+      );
+      await expect(sut.create(duplicatedProps)).rejects.toThrow(
+        "Já existe um(a) Posto/Graduação com esse valor.",
+      );
+    });
+
     test("should throw MissingParamError when order is missing", async () => {
       const propsWithoutOrder = {
         abbreviation: "Ten",
