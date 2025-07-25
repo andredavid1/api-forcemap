@@ -271,5 +271,24 @@ describe("CreateMilitaryRankService Integration Test", () => {
       expect(militaryRankCreated).not.toBeNull();
       expect(militaryRankCreated?.abbreviation).toBe("1º Ten");
     });
+
+    test("should handle very long abbreviation", async () => {
+      const propsWithLongAbbreviation: MilitaryRankProps = {
+        abbreviation: "A".repeat(100),
+        order: 5,
+      };
+
+      await expect(
+        sut.create(propsWithLongAbbreviation),
+      ).resolves.not.toThrow();
+
+      const militaryRankCreated =
+        await militaryRankRepository.findByAbbreviation(
+          propsWithLongAbbreviation.abbreviation,
+        );
+
+      expect(militaryRankCreated).not.toBeNull();
+      expect(militaryRankCreated?.abbreviation).toBe("A".repeat(100));
+    });
   });
 });
