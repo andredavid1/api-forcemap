@@ -254,5 +254,22 @@ describe("CreateMilitaryRankService Integration Test", () => {
         expect(found?.order).toBe(rank.order);
       }
     });
+
+    test("should handle special characters in abbreviation", async () => {
+      const propsWithSpecialChars: MilitaryRankProps = {
+        abbreviation: "1º Ten",
+        order: 4,
+      };
+
+      await expect(sut.create(propsWithSpecialChars)).resolves.not.toThrow();
+
+      const militaryRankCreated =
+        await militaryRankRepository.findByAbbreviation(
+          propsWithSpecialChars.abbreviation,
+        );
+
+      expect(militaryRankCreated).not.toBeNull();
+      expect(militaryRankCreated?.abbreviation).toBe("1º Ten");
+    });
   });
 });
