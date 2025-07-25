@@ -22,7 +22,9 @@ export class MilitaryRankFakeRepository implements IMilitaryRankRepository {
   ): Promise<MilitaryRank | null> => {
     return Promise.resolve(
       this.militaryRanks.find(
-        (militaryRank) => militaryRank.abbreviation === abbreviation,
+        (militaryRank) =>
+          militaryRank.abbreviation.toLowerCase() ===
+          abbreviation.toLowerCase(),
       ) || null,
     );
   };
