@@ -1,6 +1,7 @@
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { CustomAppError } from "@domain/errors";
+import { HttpClientError } from "@presentation/errors";
 import {
   IController,
   IHttpRequest,
@@ -41,11 +42,7 @@ export class CreateMilitaryRankController
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error instanceof CustomAppError) {
-        const httpResponse: IHttpResponse<null> = {
-          body: { error: error.message },
-          statusCode: error.statusCode,
-        };
-        return httpResponse;
+        return new HttpClientError(error);
       }
       const httpResponse: IHttpResponse<null> = {
         body: { error: "Erro interno no servidor." },
