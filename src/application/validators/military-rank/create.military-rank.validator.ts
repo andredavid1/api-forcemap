@@ -1,5 +1,5 @@
+import { MissingParamError } from "@application/errors";
 import { MilitaryRankProps } from "@domain/entities";
-import { MissingParamError } from "@domain/errors";
 import { IMilitaryRankRepository } from "@domain/repositories";
 import { IMilitaryRankPropsValidator } from "@domain/validators";
 
