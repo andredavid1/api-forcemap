@@ -28,4 +28,13 @@ export class MilitaryRankFakeRepository implements IMilitaryRankRepository {
       ) || null,
     );
   };
+
+  public readonly findByOrder = async (
+    order: number,
+  ): Promise<MilitaryRank | null> => {
+    return Promise.resolve(
+      this.militaryRanks.find((militaryRank) => militaryRank.order === order) ||
+        null,
+    );
+  };
 }
