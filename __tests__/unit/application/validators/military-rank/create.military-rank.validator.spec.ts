@@ -1,12 +1,14 @@
 import { MilitaryRankPropsValidator } from "@application/validators";
+import { DuplicatedKeyError, InvalidParamError } from "@application/errors";
 import { MilitaryRankProps } from "@domain/entities";
-import { IMilitaryRankPropsValidator } from "@domain/validators";
+import { IMilitaryRankPropsValidator } from "@application/protocols";
 
 interface SutTypes {
   sut: IMilitaryRankPropsValidator;
   militaryRankRepository: {
     create: jest.Mock;
     findByAbbreviation: jest.Mock;
+    findByOrder: jest.Mock;
   };
 }
 
@@ -14,6 +16,7 @@ const makeSut = (): SutTypes => {
   const militaryRankRepository = {
     create: jest.fn(),
     findByAbbreviation: jest.fn().mockResolvedValue(null),
+    findByOrder: jest.fn().mockResolvedValue(null),
   };
   const sut = new MilitaryRankPropsValidator({ militaryRankRepository });
 
@@ -99,13 +102,14 @@ describe("MilitaryRankPropsValidator", () => {
     );
   });
 
-  it("should throw if order is equal to 0", async () => {
+  it("should throw InvalidParamError if order is equal to 0", async () => {
     const { sut } = sutInstance;
 
     const props = { abbreviation: "Sd", order: 0 } as MilitaryRankProps;
 
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(InvalidParamError);
     await expect(sut.validateOrThrow(props)).rejects.toThrow(
-      "O campo Ordem precisa ser preenchido.",
+      "O campo Ordem é inválido: deve ser maior que zero",
     );
   });
 
@@ -133,5 +137,58 @@ describe("MilitaryRankPropsValidator", () => {
     await expect(sut.validateOrThrow(props)).rejects.toThrow(
       "O campo Ordem precisa ser preenchido.",
     );
+  });
+
+  it("should throw InvalidParamError if order is negative", async () => {
+    const { sut } = sutInstance;
+
+    const props = { abbreviation: "Sd", order: -5 } as MilitaryRankProps;
+
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(InvalidParamError);
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
+      "O campo Ordem é inválido: deve ser maior que zero",
+    );
+  });
+
+  it("should throw InvalidParamError if order is not an integer", async () => {
+    const { sut } = sutInstance;
+
+    const props = { abbreviation: "Sd", order: 1.5 } as MilitaryRankProps;
+
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(InvalidParamError);
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
+      "O campo Ordem é inválido: deve ser um número inteiro",
+    );
+  });
+
+  it("should throw DuplicatedKeyError if order already exists", async () => {
+    const { sut, militaryRankRepository } = sutInstance;
+
+    const props = { abbreviation: "Sd", order: 1 } as MilitaryRankProps;
+
+    jest.spyOn(militaryRankRepository, "findByOrder").mockResolvedValue({
+      id: "123",
+      abbreviation: "Cel",
+      order: 1,
+    } as MilitaryRankProps);
+
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
+      DuplicatedKeyError,
+    );
+    await expect(sut.validateOrThrow(props)).rejects.toThrow(
+      "Já existe um(a) Ordem hierárquica com esse valor.",
+    );
+  });
+
+  it("should not throw if order is unique", async () => {
+    const { sut, militaryRankRepository } = sutInstance;
+
+    const props = { abbreviation: "Sd", order: 1 } as MilitaryRankProps;
+
+    jest
+      .spyOn(militaryRankRepository, "findByOrder")
+      .mockResolvedValueOnce(null);
+
+    await expect(sut.validateOrThrow(props)).resolves.not.toThrow();
   });
 });

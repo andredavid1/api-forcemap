@@ -1,6 +1,6 @@
 import { MilitaryRankPropsSanitizer } from "@application/sanitizers";
 import { MilitaryRankProps } from "@domain/entities";
-import { IMilitaryRankPropsSanitizer } from "@domain/sanitizers";
+import { IMilitaryRankPropsSanitizer } from "@application/protocols";
 
 interface SutTypes {
   sut: IMilitaryRankPropsSanitizer;
@@ -45,7 +45,7 @@ describe("MilitaryRankPropsSanitizer", () => {
     const sanitized = sanitizer.sanitize(input);
 
     expect(sanitized.abbreviation).toBe("Gen.");
-    expect(sanitized.order).toBe(0);
+    expect(sanitized.order).toBe(undefined); // "1st" não é um número válido
   });
 
   it("should handle empty abbreviation and order", () => {
@@ -58,7 +58,7 @@ describe("MilitaryRankPropsSanitizer", () => {
     const sanitized = sanitizer.sanitize(input);
 
     expect(sanitized.abbreviation).toBe("");
-    expect(sanitized.order).toBe(0);
+    expect(sanitized.order).toBe(undefined); // string vazia retorna undefined
   });
 
   it("should handle non-integer order values", () => {
@@ -72,7 +72,7 @@ describe("MilitaryRankPropsSanitizer", () => {
     const sanitized = sanitizer.sanitize(input);
 
     expect(sanitized.abbreviation).toBe("Sgt.");
-    expect(sanitized.order).toBe(0);
+    expect(sanitized.order).toBe(1.5); // Sanitização apenas converte, não valida
   });
 
   it("should handle negative order values", () => {
@@ -86,6 +86,6 @@ describe("MilitaryRankPropsSanitizer", () => {
     const sanitized = sanitizer.sanitize(input);
 
     expect(sanitized.abbreviation).toBe("Sgt.");
-    expect(sanitized.order).toBe(0);
+    expect(sanitized.order).toBe(-5); // Sanitização apenas converte, não valida
   });
 });
