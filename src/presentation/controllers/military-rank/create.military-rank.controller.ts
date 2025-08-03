@@ -4,11 +4,12 @@ import { CustomAppError } from "@domain/errors";
 import { ILogger } from "@domain/services";
 import { ICreateMilitaryRank } from "@domain/usecases";
 import { EmptyRequestBodyError } from "@presentation/errors";
-import { HttpClientError, createHttpServerError } from "@presentation/helpers";
+import { HttpClientError } from "@presentation/helpers";
 import {
   IController,
   IHttpRequest,
   IHttpResponse,
+  IHttpResponseFactory,
 } from "@presentation/protocols";
 
 /**
@@ -21,9 +22,10 @@ import {
  * - ✅ Flexibilidade: Troca de implementações sem alterar o controller
  * - ✅ Baixo acoplamento: Depende apenas de contratos, não implementações
  */
-interface CreateMilitaryRankControllerProps {
+interface ICreateMilitaryRankControllerProps {
   createMilitaryRankService: ICreateMilitaryRank; // ✅ Interface ao invés de implementação
   logger: ILogger;
+  responseFactory: IHttpResponseFactory; // ✅ Factory pattern para respostas
 }
 
 /**
@@ -39,13 +41,13 @@ export class CreateMilitaryRankController
   implements IController<CreateMilitaryRankInputDTO, null>
 {
   private readonly logger: ILogger;
-  private readonly httpServerError: (error: Error) => IHttpResponse<null>;
+  private readonly responseFactory: IHttpResponseFactory;
 
   /**
    * @constructor
-   * @param {CreateMilitaryRankControllerProps} props - Dependências do controller
+   * @param {ICreateMilitaryRankControllerProps} props - Dependências do controller
    */
-  constructor(private readonly props: CreateMilitaryRankControllerProps) {
+  constructor(private readonly props: ICreateMilitaryRankControllerProps) {
     this.logger = props.logger.withContext({
       metadata: {
         controller: "CreateMilitaryRankController",
@@ -54,8 +56,8 @@ export class CreateMilitaryRankController
       },
     });
 
-    // Cria função de error específica com logger
-    this.httpServerError = createHttpServerError(this.logger);
+    // Factory pattern para respostas HTTP padronizadas
+    this.responseFactory = props.responseFactory;
   }
 
   public readonly handle = async (
@@ -98,11 +100,8 @@ export class CreateMilitaryRankController
         },
       });
 
-      const httpResponse: IHttpResponse<null> = {
-        statusCode: 201,
-      };
-
-      return httpResponse;
+      // Factory pattern para success response
+      return this.responseFactory.createCreated();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error instanceof CustomAppError) {
@@ -117,8 +116,8 @@ export class CreateMilitaryRankController
         return HttpClientError(error);
       }
 
-      // Usar a função com logging estruturado
-      return this.httpServerError(error as Error);
+      // Factory pattern para error handling
+      return this.responseFactory.createServerError(error as Error);
     }
   };
 }

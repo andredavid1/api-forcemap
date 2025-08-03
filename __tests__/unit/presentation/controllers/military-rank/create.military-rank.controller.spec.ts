@@ -5,11 +5,13 @@ import { CreateMilitaryRankController } from "@presentation/controllers/military
 import {
   IHttpRequest,
   IHttpResponse,
-} from "@presentation/protocols/http.interface";
+  IHttpResponseFactory,
+} from "@presentation/protocols";
 
 interface SutTypes {
   sut: CreateMilitaryRankController;
   createMilitaryRankService: ICreateMilitaryRank; // ✅ Interface ao invés de implementação
+  responseFactory: IHttpResponseFactory; // ✅ Factory pattern para testes
 }
 
 const makeSut = (): SutTypes => {
@@ -27,12 +29,33 @@ const makeSut = (): SutTypes => {
     create: jest.fn().mockResolvedValue(undefined),
   };
 
+  // ✅ Mock da factory de resposta HTTP
+  const responseFactoryMock: jest.Mocked<IHttpResponseFactory> = {
+    createServerError: jest.fn().mockReturnValue({
+      body: { error: "Erro interno no servidor." },
+      statusCode: 500,
+    }),
+    createCreated: jest.fn().mockReturnValue({
+      body: { data: null },
+      statusCode: 201,
+    }),
+    createSuccess: jest.fn().mockReturnValue({
+      body: { data: null },
+      statusCode: 200,
+    }),
+  };
+
   const sut = new CreateMilitaryRankController({
     createMilitaryRankService: createMilitaryRankServiceMock, // ✅ Interface mockada
     logger: loggerMock, // ✅ Logger injetado no controller
+    responseFactory: responseFactoryMock, // ✅ Factory injetada
   });
 
-  return { sut, createMilitaryRankService: createMilitaryRankServiceMock };
+  return {
+    sut,
+    createMilitaryRankService: createMilitaryRankServiceMock,
+    responseFactory: responseFactoryMock,
+  };
 };
 
 describe("CreateMilitaryRankController", () => {

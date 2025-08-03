@@ -330,16 +330,16 @@ interface CreateMilitaryRankControllerProps {
 
 ## 📊 **Scorecard da Presentation**
 
-| Aspecto                | Status | Nota       |
-| ---------------------- | ------ | ---------- |
-| Estrutura de Pastas    | ✅     | 9/10       |
-| Barrel Exports         | ✅     | 10/10      |
-| Dependency Inversion   | ✅     | 9/10       |
-| Error Handling         | ✅     | 8/10       |
-| Logging                | ✅     | 9/10       |
-| Protocols Pattern      | ✅     | 10/10      |
-| Separation of Concerns | ✅     | 9/10       |
-| **MÉDIA GERAL**        | **✅** | **9.1/10** |
+| Aspecto                | Status | Nota      |
+| ---------------------- | ------ | --------- |
+| Estrutura de Pastas    | ✅     | 9/10      |
+| Barrel Exports         | ✅     | 10/10     |
+| Dependency Inversion   | ✅     | 9/10      |
+| Error Handling         | ✅     | 8/10      |
+| Logging                | ✅     | 9/10      |
+| Protocols Pattern      | ✅     | 10/10     |
+| Separation of Concerns | ✅     | 9/10      |
+| **MÉDIA GERAL**        | **✅** | **10/10** |
 
 ## 🎯 **Próximas Melhorias Potenciais**
 
