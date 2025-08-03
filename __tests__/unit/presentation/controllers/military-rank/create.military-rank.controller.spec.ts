@@ -1,7 +1,6 @@
-import { CreateMilitaryRankService } from "@application/services";
 import { CreateMilitaryRankInputDTO } from "@application/dtos/military-rank";
-import { MilitaryRankProps } from "@domain/entities";
 import { ILogger } from "@domain/services";
+import { ICreateMilitaryRank } from "@domain/usecases";
 import { CreateMilitaryRankController } from "@presentation/controllers/military-rank/create.military-rank.controller";
 import {
   IHttpRequest,
@@ -10,22 +9,10 @@ import {
 
 interface SutTypes {
   sut: CreateMilitaryRankController;
-  createMilitaryRankService: CreateMilitaryRankService;
+  createMilitaryRankService: ICreateMilitaryRank; // ✅ Interface ao invés de implementação
 }
 
 const makeSut = (): SutTypes => {
-  const militaryRankRepository = {
-    create: jest.fn(),
-    findByAbbreviation: jest.fn().mockResolvedValue(null),
-    findByOrder: jest.fn().mockResolvedValue(null),
-  };
-  const militaryRankPropsSanitizer = {
-    sanitize: jest.fn().mockImplementation((props: MilitaryRankProps) => props),
-  };
-  const militaryRankPropsValidator = {
-    validateOrThrow: jest.fn(),
-  };
-
   // ✅ Mock do logger para o controller
   const loggerMock: jest.Mocked<ILogger> = {
     debug: jest.fn(),
@@ -35,19 +22,17 @@ const makeSut = (): SutTypes => {
     withContext: jest.fn().mockReturnThis(),
   };
 
-  const createMilitaryRankService = new CreateMilitaryRankService({
-    militaryRankPropsSanitizer,
-    militaryRankPropsValidator,
-    militaryRankRepository,
-    logger: loggerMock, // ✅ Logger injetado
-  });
+  // ✅ Mock da interface ICreateMilitaryRank (Dependency Inversion)
+  const createMilitaryRankServiceMock: jest.Mocked<ICreateMilitaryRank> = {
+    create: jest.fn().mockResolvedValue(undefined),
+  };
 
   const sut = new CreateMilitaryRankController({
-    createMilitaryRankService,
+    createMilitaryRankService: createMilitaryRankServiceMock, // ✅ Interface mockada
     logger: loggerMock, // ✅ Logger injetado no controller
   });
 
-  return { sut, createMilitaryRankService };
+  return { sut, createMilitaryRankService: createMilitaryRankServiceMock };
 };
 
 describe("CreateMilitaryRankController", () => {

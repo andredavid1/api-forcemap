@@ -1,8 +1,8 @@
-import { CreateMilitaryRankService } from "@application/services";
 import { CreateMilitaryRankInputDTO } from "@application/dtos/military-rank";
 import { MilitaryRankMapper } from "@application/mappers";
 import { CustomAppError } from "@domain/errors";
 import { ILogger } from "@domain/services";
+import { ICreateMilitaryRank } from "@domain/usecases";
 import { EmptyRequestBodyError } from "@presentation/errors";
 import { HttpClientError, createHttpServerError } from "@presentation/helpers";
 import {
@@ -13,9 +13,16 @@ import {
 
 /**
  * Props para construção do controller de criação de posto militar
+ *
+ * @description
+ * Usa interfaces ao invés de implementações concretas seguindo o
+ * Dependency Inversion Principle. Isso permite:
+ * - ✅ Testabilidade: Fácil mock das dependências
+ * - ✅ Flexibilidade: Troca de implementações sem alterar o controller
+ * - ✅ Baixo acoplamento: Depende apenas de contratos, não implementações
  */
-interface IConstructorProps {
-  createMilitaryRankService: CreateMilitaryRankService;
+interface CreateMilitaryRankControllerProps {
+  createMilitaryRankService: ICreateMilitaryRank; // ✅ Interface ao invés de implementação
   logger: ILogger;
 }
 
@@ -36,9 +43,9 @@ export class CreateMilitaryRankController
 
   /**
    * @constructor
-   * @param {IConstructorProps} props - Dependências do controller
+   * @param {CreateMilitaryRankControllerProps} props - Dependências do controller
    */
-  constructor(private readonly props: IConstructorProps) {
+  constructor(private readonly props: CreateMilitaryRankControllerProps) {
     this.logger = props.logger.withContext({
       metadata: {
         controller: "CreateMilitaryRankController",
