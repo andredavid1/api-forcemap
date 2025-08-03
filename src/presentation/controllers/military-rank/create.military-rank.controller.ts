@@ -1,5 +1,6 @@
 import { CreateMilitaryRankService } from "@application/services";
-import { MilitaryRankProps } from "@domain/entities";
+import { CreateMilitaryRankInputDTO } from "@application/dtos/military-rank";
+import { MilitaryRankMapper } from "@application/mappers";
 import { CustomAppError } from "@domain/errors";
 import { EmptyRequestBodyError } from "@presentation/errors";
 import { HttpClientError, HttpServerError } from "@presentation/helpers";
@@ -14,12 +15,12 @@ interface IConstructorProps {
 }
 
 export class CreateMilitaryRankController
-  implements IController<MilitaryRankProps, null>
+  implements IController<CreateMilitaryRankInputDTO, null>
 {
   constructor(private readonly props: IConstructorProps) {}
 
   public readonly handle = async (
-    httpRequest: IHttpRequest<MilitaryRankProps>,
+    httpRequest: IHttpRequest<CreateMilitaryRankInputDTO>,
   ): Promise<IHttpResponse<null>> => {
     const { createMilitaryRankService } = this.props;
 
@@ -28,9 +29,10 @@ export class CreateMilitaryRankController
         throw new EmptyRequestBodyError();
       }
 
-      const data: MilitaryRankProps = httpRequest.body.data;
+      const inputDTO: CreateMilitaryRankInputDTO = httpRequest.body.data;
+      const militaryRankProps = MilitaryRankMapper.toEntity(inputDTO);
 
-      await createMilitaryRankService.create(data);
+      await createMilitaryRankService.create(militaryRankProps);
 
       const httpResponse: IHttpResponse<null> = {
         statusCode: 201,
