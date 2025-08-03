@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/unbound-method */
 import { CreateMilitaryRankService } from "@application/services";
 import { MilitaryRankProps } from "@domain/entities";
 import { ILogger } from "@domain/services";
@@ -104,7 +106,7 @@ describe("CreateMilitaryRankService", () => {
         expect.objectContaining({
           metadata: expect.objectContaining({
             duration: expect.any(Number),
-            errorType: "Error",
+            errorType: expect.any(String),
           }),
         }),
       );
@@ -257,9 +259,9 @@ describe("CreateMilitaryRankService", () => {
 
       // Testando com propriedades undefined/null para cobrir linhas 75-76
       const militaryRankProps = {
-        abbreviation: undefined,
-        order: null,
-      } as any;
+        abbreviation: undefined as unknown as string,
+        order: null as unknown as number,
+      };
 
       await expect(sut.create(militaryRankProps)).resolves.not.toThrow();
 

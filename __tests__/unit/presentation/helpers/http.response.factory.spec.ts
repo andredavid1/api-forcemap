@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { CustomAppError } from "@domain/errors";
 import { ILogger } from "@domain/services";
 import { HttpClientError, HttpResponseFactory } from "@presentation/helpers";
