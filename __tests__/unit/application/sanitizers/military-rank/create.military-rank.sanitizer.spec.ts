@@ -88,4 +88,88 @@ describe("MilitaryRankPropsSanitizer", () => {
     expect(sanitized.abbreviation).toBe("Sgt.");
     expect(sanitized.order).toBe(-5); // Sanitização apenas converte, não valida
   });
+
+  it("should handle numeric abbreviation values", () => {
+    const sanitizer = sutInstance.sut;
+
+    const input: MilitaryRankProps = {
+      abbreviation: 123,
+      order: 1,
+    } as unknown as MilitaryRankProps;
+
+    const sanitized = sanitizer.sanitize(input);
+
+    expect(sanitized.abbreviation).toBe("123"); // Número convertido para string
+    expect(sanitized.order).toBe(1);
+  });
+
+  it("should handle null abbreviation", () => {
+    const sanitizer = sutInstance.sut;
+
+    const input: MilitaryRankProps = {
+      abbreviation: null,
+      order: 1,
+    } as unknown as MilitaryRankProps;
+
+    const sanitized = sanitizer.sanitize(input);
+
+    expect(sanitized.abbreviation).toBe(""); // null retorna string vazia
+    expect(sanitized.order).toBe(1);
+  });
+
+  it("should handle undefined abbreviation", () => {
+    const sanitizer = sutInstance.sut;
+
+    const input: MilitaryRankProps = {
+      abbreviation: undefined,
+      order: 1,
+    } as unknown as MilitaryRankProps;
+
+    const sanitized = sanitizer.sanitize(input);
+
+    expect(sanitized.abbreviation).toBe(""); // undefined retorna string vazia
+    expect(sanitized.order).toBe(1);
+  });
+
+  it("should handle object/array abbreviation values", () => {
+    const sanitizer = sutInstance.sut;
+
+    const input: MilitaryRankProps = {
+      abbreviation: { invalid: "object" },
+      order: 1,
+    } as unknown as MilitaryRankProps;
+
+    const sanitized = sanitizer.sanitize(input);
+
+    expect(sanitized.abbreviation).toBe(""); // Objeto retorna string vazia
+    expect(sanitized.order).toBe(1);
+  });
+
+  it("should handle array abbreviation values", () => {
+    const sanitizer = sutInstance.sut;
+
+    const input: MilitaryRankProps = {
+      abbreviation: ["invalid", "array"],
+      order: 1,
+    } as unknown as MilitaryRankProps;
+
+    const sanitized = sanitizer.sanitize(input);
+
+    expect(sanitized.abbreviation).toBe(""); // Array retorna string vazia
+    expect(sanitized.order).toBe(1);
+  });
+
+  it("should handle null order", () => {
+    const sanitizer = sutInstance.sut;
+
+    const input: MilitaryRankProps = {
+      abbreviation: "Sgt",
+      order: null,
+    } as unknown as MilitaryRankProps;
+
+    const sanitized = sanitizer.sanitize(input);
+
+    expect(sanitized.abbreviation).toBe("Sgt");
+    expect(sanitized.order).toBe(undefined); // null retorna undefined
+  });
 });

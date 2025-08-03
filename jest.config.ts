@@ -31,6 +31,7 @@ const config: Config = {
     "src/**/*.ts",
     "!src/**/*.spec.ts",
     "!src/**/*.test.ts",
+    "!src/**/*.dto.ts",
     "!src/**/*.entity.ts",
     "!src/**/*.interface.ts",
     "!src/**/*.usecase.ts",
