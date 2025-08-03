@@ -1,5 +1,19 @@
+import { CustomAppError } from "@domain/errors";
 import { ILogger } from "@domain/services";
 import { IHttpResponse, IHttpResponseFactory } from "@presentation/protocols";
+
+/**
+ * Cria resposta HTTP para erros de cliente (4xx)
+ *
+ * @param error - Erro customizado da aplicação
+ * @returns IHttpResponse com status e mensagem do erro
+ */
+export const HttpClientError = (error: CustomAppError): IHttpResponse<null> => {
+  return {
+    body: { error: error.message },
+    statusCode: error.statusCode,
+  };
+};
 
 /**
  * Factory concreta para criação de respostas HTTP padronizadas
