@@ -41,7 +41,11 @@ const makeSut = (): SutTypes => {
     militaryRankRepository,
     logger: loggerMock, // ✅ Logger injetado
   });
-  const sut = new CreateMilitaryRankController({ createMilitaryRankService });
+
+  const sut = new CreateMilitaryRankController({
+    createMilitaryRankService,
+    logger: loggerMock, // ✅ Logger injetado no controller
+  });
 
   return { sut, createMilitaryRankService };
 };
