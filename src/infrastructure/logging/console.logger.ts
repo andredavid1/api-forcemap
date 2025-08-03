@@ -3,20 +3,69 @@ import { ILogger, LogLevel, LogContext, LogEntry } from "@domain/services";
 /**
  * Implementação do logger usando console nativo do Node.js
  *
- * Esta implementação:
- * - Usa console.error, console.warn, console.info, console.debug
- * - Formata logs em JSON estruturado
- * - Adiciona timestamp automático
- * - Suporta contexto enriquecido
- * - Permite logging de erros com stack trace
+ * @class ConsoleLogger
+ * @implements {ILogger}
+ * @description
+ * Logger para ambiente de desenvolvimento e produção que utiliza console nativo
+ * do Node.js. Formata logs em JSON estruturado com timestamp automático,
+ * contexto enriquecido e suporte completo a stack traces de erros.
+ *
+ * @see {@link ILogger} - Interface base para logging
+ * @see {@link LoggerFactory} - Factory para criação de loggers
+ * @see {@link SilentLogger} - Implementação para testes
  */
 export class ConsoleLogger implements ILogger {
   private readonly baseContext: LogContext;
 
+  /**
+   * Cria uma nova instância do ConsoleLogger
+   *
+   * @constructor
+   * @param {LogContext} [baseContext={}] - Contexto base aplicado a todos os logs
+   * @description
+   * Inicializa o logger com um contexto base opcional que será mesclado
+   * com o contexto específico de cada log. Útil para definir informações
+   * comuns como service, module, layer, etc.
+   *
+   * @example
+   * ```typescript
+   * const logger = new ConsoleLogger({
+   *   metadata: {
+   *     service: "military-rank",
+   *     layer: "infrastructure",
+   *     version: "1.0.0"
+   *   }
+   * });
+   * ```
+   *
+   */
   constructor(baseContext: LogContext = {}) {
     this.baseContext = baseContext;
   }
 
+  /**
+   * Registra um log de erro (nível ERROR)
+   *
+   * @method error
+   * @param {string} message - Mensagem descritiva do erro
+   * @param {Error} [error] - Objeto Error com stack trace (opcional)
+   * @param {LogContext} [context] - Contexto adicional para enriquecer o log
+   * @returns {void}
+   * @description
+   * Registra erros críticos que requerem atenção imediata. Inclui
+   * stack trace completo quando um objeto Error é fornecido.
+   * Usa console.error para output apropriado.
+   *
+   * @example
+   * ```typescript
+   * logger.error("Falha na conexão com banco", dbError, {
+   *   operation: "database-connect",
+   *   metadata: { host: "localhost", port: 5432 }
+   * });
+   * ```
+   *
+   * @since 1.0.0
+   */
   public error(message: string, error?: Error, context?: LogContext): void {
     const logEntry = this.createLogEntry(
       LogLevel.ERROR,
@@ -27,6 +76,27 @@ export class ConsoleLogger implements ILogger {
     console.error(this.formatLogEntry(logEntry));
   }
 
+  /**
+   * Registra um log de aviso (nível WARN)
+   *
+   * @method warn
+   * @param {string} message - Mensagem descritiva do aviso
+   * @param {LogContext} [context] - Contexto adicional para enriquecer o log
+   * @returns {void}
+   * @description
+   * Registra situações que requerem atenção mas não são críticas.
+   * Usa console.warn para output apropriado.
+   *
+   * @example
+   * ```typescript
+   * logger.warn("Cache expirou, utilizando dados default", {
+   *   operation: "cache-lookup",
+   *   metadata: { key: "user-123", ttl: 3600 }
+   * });
+   * ```
+   *
+   * @since 1.0.0
+   */
   public warn(message: string, context?: LogContext): void {
     const logEntry = this.createLogEntry(LogLevel.WARN, message, context);
     console.warn(this.formatLogEntry(logEntry));

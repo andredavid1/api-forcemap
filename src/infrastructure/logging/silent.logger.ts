@@ -2,6 +2,11 @@ import { ILogger, LogContext } from "@domain/services";
 
 /**
  * Estrutura interna de log para o SilentLogger
+ *
+ * @interface StoredLog
+ * @description
+ * Representa um log armazenado internamente pelo SilentLogger
+ * para verificação durante testes unitários.
  */
 interface StoredLog {
   level: string;
@@ -14,11 +19,49 @@ interface StoredLog {
 /**
  * Implementação de logger silencioso para testes
  *
- * Esta implementação:
- * - Não produz nenhuma saída no console
- * - Armazena logs internamente para verificação em testes
- * - Mantém a interface compatível
- * - Permite verificar se logs foram chamados corretamente
+ * @class SilentLogger
+ * @implements {ILogger}
+ * @description
+ * Logger especialmente projetado para ambiente de testes que não produz
+ * nenhuma saída no console, mas armazena todos os logs internamente para
+ * verificação posterior. Essencial para manter testes limpos e verificar
+ * se o logging está funcionando corretamente.
+ *
+ * Esta implementação é otimizada para:
+ * - Testes unitários sem poluição de console
+ * - Verificação de chamadas de logging em testes
+ * - Validação de contexto e metadados nos logs
+ * - Performance em suites de teste extensas
+ *
+ * @example
+ * ```typescript
+ * // Uso básico em testes
+ * const logger = new SilentLogger();
+ * logger.info("Test message");
+ *
+ * // Verificação em testes
+ * const logs = logger.getLogs();
+ * expect(logs).toHaveLength(1);
+ * expect(logs[0].message).toBe("Test message");
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Verificação de contexto específico
+ * const logger = new SilentLogger();
+ * logger.error("Error occurred", new Error("Test"), {
+ *   operation: "test-operation"
+ * });
+ *
+ * const errorLogs = logger.getLogsByLevel("error");
+ * expect(errorLogs[0].context?.operation).toBe("test-operation");
+ * ```
+ *
+ * @since 1.0.0
+ * @author API Force Map Team
+ * @see {@link ILogger} - Interface base para logging
+ * @see {@link ConsoleLogger} - Implementação para desenvolvimento/produção
+ * @see {@link LoggerFactory} - Factory para criação de loggers
  */
 export class SilentLogger implements ILogger {
   private readonly logs: StoredLog[] = [];

@@ -2,6 +2,20 @@ import { MilitaryRank, MilitaryRankProps } from "@domain/entities";
 import { IMilitaryRankRepository } from "@domain/repositories";
 import { randomUUID } from "node:crypto";
 
+/**
+ * Implementação fake do repositório de postos militares para testes e desenvolvimento
+ *
+ * @class MilitaryRankFakeRepository
+ * @implements {IMilitaryRankRepository}
+ * @description
+ * Repositório em memória que simula operações de persistência de postos militares
+ * sem dependência de banco de dados real. Ideal para testes unitários, integração
+ * e desenvolvimento local rápido.
+ *
+ * @see {@link IMilitaryRankRepository} - Interface do repositório
+ * @see {@link MilitaryRank} - Entidade de posto militar
+ * @see {@link MilitaryRankProps} - Props para criação
+ */
 export class MilitaryRankFakeRepository implements IMilitaryRankRepository {
   private militaryRanks: MilitaryRank[] = [];
 
