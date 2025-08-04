@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { healthCheckHandler, apiInfoHandler } from "@presentation/routes";
+import {
+  healthCheckHandler,
+  apiInfoHandler,
+} from "@presentation/routes/health/health.handlers";
 import { IHttpRequest, IHttpResponse } from "@infrastructure/protocols/http";
 
 interface HealthData {
