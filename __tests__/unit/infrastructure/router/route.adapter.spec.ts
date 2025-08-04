@@ -236,13 +236,14 @@ describe("RouteAdapter", () => {
       // Testar com uma classe que estende RouteAdapter para acessar rotas privadas
       class TestableRouteAdapter extends RouteAdapter {
         public forceUnsupportedMethod(): void {
-          // Força um método não suportado através de type assertion
-          const routes = (this as any).routes as Array<{
+          // Força um método não suportado através de reflexão controlada
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const routesArray = (this as Record<string, any>)["routes"] as Array<{
             method: string;
             path: string;
             handler: IRouteHandler;
           }>;
-          routes.push({
+          routesArray.push({
             method: "PATCH",
             path: "/test",
             handler: mockHandler,
@@ -388,8 +389,8 @@ describe("RouteAdapter", () => {
       expect(routes.find((r) => r.path === "/health")).toBeDefined();
       expect(routes.find((r) => r.path === "/")).toBeDefined();
 
-      // Verify users API routes
-      expect(routes.find((r) => r.path === "/api/v1/users/")).toBeDefined();
+      // Verify users API routes - após correção do combinePaths, "/" não adiciona barra extra
+      expect(routes.find((r) => r.path === "/api/v1/users")).toBeDefined();
       expect(routes.find((r) => r.path === "/api/v1/users/:id")).toBeDefined();
 
       // Apply to server
@@ -410,11 +411,13 @@ describe("RouteAdapter", () => {
       testAdapter.registerRoute("GET", "/test", mockHandler);
 
       // Simular comportamento incorreto modificando internamente
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-      const routes = (testAdapter as any).routes;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const routes = (testAdapter as Record<string, any>)["routes"] as Array<{
+        method: string;
+        path: string;
+        handler: IRouteHandler;
+      }>;
       if (routes && routes.length > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         routes[0].method = "PATCH"; // Método não suportado
       }
 

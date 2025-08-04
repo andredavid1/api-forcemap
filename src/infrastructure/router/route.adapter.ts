@@ -128,6 +128,17 @@ class GroupRouteAdapter implements IRouteAdapter {
   private combinePaths(prefix: string, path: string): string {
     const cleanPrefix = prefix.replace(/\/$/, "");
     const cleanPath = path.startsWith("/") ? path : `/${path}`;
+
+    // Se o path é apenas "/" e temos um prefix, usar apenas o prefix
+    if (cleanPath === "/" && cleanPrefix) {
+      return cleanPrefix;
+    }
+
+    // Se não há prefix, usar apenas o path
+    if (!cleanPrefix) {
+      return cleanPath;
+    }
+
     return `${cleanPrefix}${cleanPath}`;
   }
 }
