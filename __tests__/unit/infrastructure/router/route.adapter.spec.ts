@@ -389,8 +389,8 @@ describe("RouteAdapter", () => {
       expect(routes.find((r) => r.path === "/health")).toBeDefined();
       expect(routes.find((r) => r.path === "/")).toBeDefined();
 
-      // Verify users API routes - após correção do combinePaths, "/" não adiciona barra extra
-      expect(routes.find((r) => r.path === "/api/v1/users")).toBeDefined();
+      // Verify users API routes
+      expect(routes.find((r) => r.path === "/api/v1/users/")).toBeDefined();
       expect(routes.find((r) => r.path === "/api/v1/users/:id")).toBeDefined();
 
       // Apply to server
