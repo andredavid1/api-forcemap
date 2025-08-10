@@ -12,7 +12,7 @@ API REST para gerenciamento de postos e graduações militares, implementada seg
 ### ✨ Características
 
 - 🏗️ **Clean Architecture** com separação total de responsabilidades
-- 🔧 **SOLID Principles** implementados rigorosamente  
+- 🔧 **SOLID Principles** implementados rigorosamente
 - 🧪 **TDD** com 254 testes e 99.89% de cobertura
 - ⚡ **CQS** com separação clara entre Commands e Queries
 - 🔄 **Dependency Inversion** - Framework agnóstico
@@ -23,6 +23,7 @@ API REST para gerenciamento de postos e graduações militares, implementada seg
 ## 🚀 Deploy no Render
 
 ### Pré-requisitos
+
 - Conta no [Render](https://render.com)
 - Repositório no GitHub
 
@@ -39,10 +40,11 @@ API REST para gerenciamento de postos e graduações militares, implementada seg
 Build Command: npm install && npm run build
 Start Command: npm run start:prod
 Environment: Node
-Node Version: 18+ 
+Node Version: 18+
 ```
 
 3. **Variáveis de Ambiente:**
+
 ```
 NODE_ENV=production
 PORT=(automático pelo Render)
@@ -52,6 +54,7 @@ HOST=0.0.0.0
 ## 📡 Endpoints Disponíveis
 
 ### Health Check
+
 ```bash
 GET /health
 # Retorna status da aplicação
@@ -60,6 +63,7 @@ GET /health
 ### Postos/Graduações Militares
 
 #### ✅ Criar Graduação (Implementado)
+
 ```bash
 POST /api/v1/military-ranks/
 Content-Type: application/json
@@ -73,6 +77,7 @@ Content-Type: application/json
 ```
 
 **Resposta de Sucesso (201):**
+
 ```json
 {
   "statusCode": 201,
@@ -83,24 +88,28 @@ Content-Type: application/json
 ```
 
 #### 🔄 Listar Graduações (Interface definida)
+
 ```bash
 GET /api/v1/military-ranks/
 # TODO: Implementar
 ```
 
-#### 🔄 Buscar por ID (Interface definida) 
+#### 🔄 Buscar por ID (Interface definida)
+
 ```bash
 GET /api/v1/military-ranks/:id
 # TODO: Implementar
 ```
 
 #### 🔄 Atualizar Graduação (Interface definida)
+
 ```bash
 PUT /api/v1/military-ranks/:id
 # TODO: Implementar
 ```
 
 #### 🔄 Deletar Graduação (Interface definida)
+
 ```bash
 DELETE /api/v1/military-ranks/:id
 # TODO: Implementar
@@ -109,6 +118,7 @@ DELETE /api/v1/military-ranks/:id
 ## 🛠️ Desenvolvimento Local
 
 ### Instalação
+
 ```bash
 # Clone o repositório
 git clone https://github.com/andredavid1/api-forcemap.git
@@ -125,6 +135,7 @@ pnpm dev
 ```
 
 ### Scripts Disponíveis
+
 ```bash
 pnpm dev          # Desenvolvimento com hot reload
 pnpm build        # Build para produção
@@ -139,7 +150,7 @@ pnpm lint         # Verifica código com ESLint
 ```
 src/
 ├── domain/          # Regras de negócio puras
-├── application/     # Casos de uso e lógica de aplicação  
+├── application/     # Casos de uso e lógica de aplicação
 ├── infrastructure/  # Implementações concretas (HTTP, DB, Log)
 └── presentation/    # Interface com usuário (Controllers, Routes)
 ```
@@ -166,6 +177,7 @@ pnpm test:watch
 ```
 
 **Cobertura Atual: 99.89%**
+
 - 254 testes passando
 - Testes unitários e de integração
 - Documentação viva através dos testes
