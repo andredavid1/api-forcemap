@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.git
+.husky
+__tests__
+*.md
+.eslintrc*
+.prettierrc
+jest.config.*
+.editorConfig
+vercel.json
+DEPLOY_STATUS.md

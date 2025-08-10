@@ -5,9 +5,10 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: pnpm install && pnpm build
-    startCommand: pnpm start:prod
+    buildCommand: pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm prestart:prod && pnpm start:prod
     healthCheckPath: /health
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
@@ -18,3 +19,5 @@ services:
           property: port
       - key: HOST
         value: 0.0.0.0
+      - key: PNPM_VERSION
+        value: 10.13.1

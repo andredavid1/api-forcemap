@@ -13,13 +13,18 @@
     "build:watch": "tsc -p tsconfig.build.json -w",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js",
+    "prestart:prod": "chmod +x scripts/prestart.sh && ./scripts/prestart.sh",
     "start:prod": "node -r ./src/tsconfig-paths-bootstrap.js dist/index.js",
     "prepare": "husky",
-    "postinstall": "npm run build"
+    "render:check": "chmod +x scripts/render-check.sh && ./scripts/render-check.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=18.20.0",
+    "pnpm": ">=10.13.1"
+  },
   "packageManager": "pnpm@10.13.1",
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
